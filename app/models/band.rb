@@ -14,9 +14,11 @@ class Band
     end
 
     def concerts
-        Concert.all.select do |concert|
-            concert.band == self
-        end
+        Concert.all.filter{|concert| concert.band==self}
+    end
+
+    def venues
+        self.concerts.map{|concert| concert.venue}.uniq
     end
 
     def play_in_venue(date, venue)

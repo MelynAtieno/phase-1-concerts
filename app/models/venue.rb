@@ -14,15 +14,17 @@ class Venue
     end
 
     def concerts
-        Concert.all.select do |concert|
-            concert.venue == self
-        end
+        Concert.all.filter {|concert|
+            concert.venue == self}
+        
+    end
+
+    def all_bands
+        self.concerts.map{|concert| concert.band}
     end
 
     def bands
-        self.concerts.map do |band|
-            band.band
-        end
+        self.all_bands.uniq
     end
 
     def concert_on(date)
@@ -31,7 +33,6 @@ class Venue
     end
 
     def most_frequent_band
-        self.bands.sort_by{|band,concert|concert}.last[0]
-        
+        self.all_bands.tally.sort_by{|key,value| value}.last.first
     end
 end
